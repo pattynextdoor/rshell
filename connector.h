@@ -9,5 +9,9 @@ class Connector : public Base {
     Base* right;
 
   public:
+    Connector();
+    Connector(Base* left, Base* right);
+
     bool execute();
-}
+};
+#endif

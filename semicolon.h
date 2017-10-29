@@ -9,4 +9,5 @@ class Semicolon : public Connector {
     Semicolon(Base* left, Base* right);
     
     bool execute();
-}
+};
+#endif
