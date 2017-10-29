@@ -5,5 +5,9 @@
 
 class And : public Connector {
   public:
+    And();
+    And(Base* left, Base* right);
+
     bool execute();
-}
+};
+#endif
