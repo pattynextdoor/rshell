@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-class cmd : public base {
+class CMD : public Base {
 	protected:
 	vector<Base*> commands;
 	
