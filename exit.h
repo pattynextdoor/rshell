@@ -6,8 +6,8 @@
 #include <string>
 
 class Exit : public CMD {
-	public:
-		bool execute();
+  public:
+    bool execute();
 
 };
 #endif
