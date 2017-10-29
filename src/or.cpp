@@ -1,4 +1,4 @@
-#include "or.h"
+#include "../header/or.h"
 
 Or::Or(Base* left, Base* right) : Connector(left, right) {}
 
