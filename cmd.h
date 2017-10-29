@@ -6,10 +6,10 @@
 #include <string>
 
 class CMD : public Base {
-	protected:
-		vector<Base*> commands;
+  protected:
+    vector<Base*> commands;
 	
-	public:
-		bool execute();
+  public:
+    bool execute();
 };
 #endif
