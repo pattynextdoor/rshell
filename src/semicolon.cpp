@@ -1,4 +1,4 @@
-#include "semicolon.h"
+#include "../header/semicolon.h"
 
 Semicolon::Semicolon(Base* left, Base* right) : Connector(left, right) {}
 
