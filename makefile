@@ -1,6 +1,6 @@
 CC = g++
 CC_FLAGS = -Wall -ansi
-EXEC = test.out
+EXEC = /bin/rshell 
 SOURCES = $(wildcard src/*.cpp)
 OBJECTS = $(SOURCES: .cpp=.o)
 
