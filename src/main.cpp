@@ -10,7 +10,6 @@
 #include <boost/tokenizer.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
-#include "../header/cmd.h"
 
 using namespace std;
 using namespace boost;
@@ -27,33 +26,25 @@ string prompt() {
 int main() {
   while(1) {
     vector<string> argVector;
-    char* args[50];
     string input = prompt();
     split(argVector, input, is_any_of(" "));
-
+    char* args[argVector.size()];
     for(unsigned i = 0; i < argVector.size(); i++) {
-      string buffer = argVector.at(i);
-      args[i] = (char*)buffer.c_str();
+      args[i] = (char*)argVector.at(i).c_str();
+    }
 
-      if(i == argVector.size() - 1) {
-        args[i + 1] = NULL;
-        
-        for(unsigned j = 0; j < argVector.size(); j++) {
-          cout << args[i] << endl;
-        }
+    args[argVector.size()] = NULL;
 
-        pid_t pid = fork();
+    pid_t pid = fork();
 
-        if(pid == 0) {
-          if(execvp(args[0], args) == -1) {
-            perror("exec");
-           }
-         }
-        if(pid > 0) {
-          if(wait(0) == -1) {
-            perror("wait");
-          }
-        }
+    if(pid == 0) {
+      if(execvp(args[0], args) == -1) {
+        perror("exec");
+      }
+    }
+    if(pid > 0) {
+      if(wait(0) == -1) {
+        perror("wait");
       }
     }
   
