@@ -8,9 +8,10 @@
 
 class CMD : public Base {
   protected:
-    std::vector<Base*> commands;
+    vector<Base*> commands;
 	
   public:
+    CMD();
     bool execute();
 };
 #endif
