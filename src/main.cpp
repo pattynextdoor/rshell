@@ -24,11 +24,15 @@ string prompt() {
 }
 
 int main() {
-  while(1) {
+  string input;
+  while(input != "exit") {
     vector<string> argVector;
-    string input = prompt();
+    input = prompt();
+
     split(argVector, input, is_any_of(" "));
+
     char* args[argVector.size()];
+
     for(unsigned i = 0; i < argVector.size(); i++) {
       args[i] = (char*)argVector.at(i).c_str();
     }
