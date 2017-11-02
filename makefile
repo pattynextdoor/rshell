@@ -1,6 +1,7 @@
 CC = g++
 CC_FLAGS = -Wall -ansi
-EXEC = /bin/rshell 
+EXEC = rshell
+MKDIR_P = mkdir bin 
 SOURCES = $(wildcard src/*.cpp)
 OBJECTS = $(SOURCES: .cpp=.o)
 
