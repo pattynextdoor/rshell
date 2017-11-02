@@ -4,10 +4,11 @@
 #include "base.h"
 #include <iostream>
 #include <string>
+#include <vector>
 
 class CMD : public Base {
   protected:
-    vector<Base*> commands;
+    std::vector<Base*> commands;
 	
   public:
     bool execute();
