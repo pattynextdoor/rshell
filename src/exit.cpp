@@ -1,8 +1,8 @@
-#include "exit.h"
+#include "../header/exit.h"
 #include <iostream>
 
-exit::exit() {}
+Exit::Exit() {}
 
-bool exit::execute() {
+bool Exit::execute() {
   exit(0);
 }
