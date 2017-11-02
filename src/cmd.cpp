@@ -1,4 +1,4 @@
-#include "cmd.h"
+#include "../header/cmd.h"
 
 CMD::CMD() {}
 
