@@ -26,7 +26,13 @@ string prompt() {
 int main() {
   string input;
   while(input != "exit") {
+    if(input == "exit") {
+      Exit* userExit = new Exit();
+      userExit.execute();
+    }
+  
     vector<string> argVector;
+    CMD* userCMD = new CMD();
     input = prompt();
 
     split(argVector, input, is_any_of(" "));
@@ -52,26 +58,20 @@ int main() {
       }
     }
   
-
-        
-/*
-    unsigned argsPos = 0;
-    string input = prompt();
-    char_separator<char> sep(" ");
-    tokenizer<char_separator<char> > tok(input, sep);
+    for(unsigned int j = 0; j < argVector.size(); j++) {
+      if (argVector.at(j) == ||) {
+        Or* newOr = new Or()
+        userCMD.commands.push_back(newOr);
+      }
+      if (argVector.at(j) == &&) {
+        And newAnd = new And();
+        userCMD.commands.push_back(newAnd);
+      }
+      else
+        //INCOMPLETE
+     }
     
-    for(tokenizer< char_separator<char> > ::iterator iter= tok.begin(); iter != tok.end(); ++iter){
-      string buffer  = *iter;
-      args[argsPos] = (char*)buffer.c_str();
-      cout << args[argsPos] << endl;
-      argsPos++;
-    }
-    cout << args[0] << endl;
-    //Last element must be NULL for execvp
-    if(execvp(args[0], args) == -1) {
-      perror("exec");
-    }
-*/
-  }
+        
+ }
 }
 
