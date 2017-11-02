@@ -9,7 +9,7 @@ class Connector : public Base {
     Base* right;
 
   public:
-    Connector();
+    Connector() {left = 0, right = 0} ;
     Connector(Base* left, Base* right);
 
     bool execute();
