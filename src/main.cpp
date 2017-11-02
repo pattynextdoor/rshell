@@ -10,6 +10,10 @@
 #include <boost/tokenizer.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
+#include "../header/or.h"
+#include "../header/exit.h"
+#include "../header/and.h"
+#include "../header/semicolon.h"
 
 using namespace std;
 using namespace boost;
