@@ -7,10 +7,8 @@
 #include <vector>
 
 class CMD : public Base {
-  protected:
-    vector<Base*> commands;
-	
   public:
+    vector<Base*> commands;
     CMD();
     bool execute();
 };
