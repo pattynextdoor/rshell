@@ -1,3 +1,4 @@
 **/header/*.gch
-**/src/*.out
+**.out
+rshell
 **/src/*.swp
