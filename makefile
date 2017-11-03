@@ -5,7 +5,7 @@ SOURCES = $(wildcard src/*.cpp)
 OBJECTS = $(SOURCES: .cpp=.o)
 
 all:
-	mkdir -p ./$(TARGETDIR)
+	mkdir -p bin 
 	$(CC) $(CC_FLAGS) $(SOURCES) -o $(TARGET)
 
 clean:
