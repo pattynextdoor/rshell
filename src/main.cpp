@@ -56,9 +56,9 @@ int main() {
       cmdStack.push(args[j]);
     }
   }*/
-  int exitIndex = 0;
-  
-  while(exitIndex == 0) {
+  int exitIndex = 1;
+  int commentIndex = 0;  
+  while(exitIndex != 0) {
     vector<string> argVector;
     string input = prompt();
     
@@ -71,6 +71,14 @@ int main() {
     }
 
     args[argVector.size()] = NULL;
+    for(unsigned int i = 0; i < argVector.size(); i++) {
+      if(strcmp(args[i], "#") == 0) {
+        commentIndex = i;
+          for( unsigned j = commentIndex; j < argVector.size(); j++) {
+            args[j] = NULL;
+          }
+      }
+    }
 
     pid_t pid = fork();
 
@@ -85,11 +93,11 @@ int main() {
       }
     }
     
-    for(unsigned int j = 0; j < argVector.size(); j++) {
+    /*for(unsigned int j = 0; j < argVector.size(); j++) {
       if(strcmp(args[j], "exit") == 0) {
         exitIndex = j;
       }
-    }
+    }*/
 
     /*for(unsigned int j = 0; j < argVector.size(); j++) {
       if (argVector.at(j) == "||") {
@@ -102,7 +110,6 @@ int main() {
       }
         //INCOMPLETE
     }*/
-    
         
  }
   return 0;
