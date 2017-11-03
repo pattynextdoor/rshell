@@ -1,16 +1,12 @@
-CC = g++
-CC_FLAGS = -Wall -Werror -ansi -pedantic
-EXEC = rshell
-TARGETDIR = bin 
-TARGET = $(TARGETDIR)/$(EXEC)
+CC=g++
+CC_FLAGS =-Wall -Werror -ansi -pedantic
+TARGET = ./bin/rshell
 SOURCES = $(wildcard src/*.cpp)
 OBJECTS = $(SOURCES: .cpp=.o)
 
-$(TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(EXEC)
-
-%.o: %.cpp
-	$(CC) -c $(CC_FLAGS) $< -o $@
+all:
+	mkdir -p ./$(TARGETDIR)
+	$(CC) $(CC_FLAGS) $(SOURCES) -o $(TARGET)
 
 clean:
-	rm -f $(EXEC) $(OBJECTS)
+	rm -rf ./$(TARGETDIR)
