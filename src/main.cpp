@@ -20,7 +20,6 @@ using namespace std;
 using namespace boost;
 
 string prompt() {
-
   string input;
 
   cout << "$ ";
@@ -29,45 +28,56 @@ string prompt() {
 }
 
 int main() {
-  int exitIndex = 1;
-  int commentIndex = 0;  
-
-  while(exitIndex != 0) {
+    
+    int exitIndex = 0; 
+    int commentIndex = 0;  
+  while(1) {
     vector<string> argVector;
     string input = prompt();
     
     split(argVector, input, is_any_of(" "));
 
-    char* args[100];
+    char* args[500];
 
     for(unsigned i = 0; i < argVector.size(); i++) {
       args[i] = (char*)argVector.at(i).c_str();
     }
 
-    args[argVector.size()] = NULL;
-    for(unsigned int i = 0; i < argVector.size(); i++) {
-      if(strcmp(args[i], "#") == 0) {
-        commentIndex = i;
-          for( unsigned j = commentIndex; j <= argVector.size(); j++) {
-            args[j] = NULL;
-          }
-        break;
+    for (unsigned int i = 0; i < argVector.size(); i++) {
+      if(strcmp(args[i], "exit") == 0) {
+        exitIndex = i;
       }
     }
+    //CHECK IF USER INPUTS EXIT ONLY`
+    if((strcmp(args[0], "exit") == 0)) {
+      Exit* userExit = new Exit();
+      userExit->execute();
+    }
+    else {
+      args[argVector.size()] = NULL;
+      for(unsigned int i = 0; i < argVector.size(); i++) {
+        if(strcmp(args[i], "#") == 0) {
+          commentIndex = i;
+            for( unsigned j = commentIndex; j <= argVector.size(); j++) {
+              args[j] = NULL;
+            }
+          break;
+        }
+      }
 
-    pid_t pid = fork();
+      pid_t pid = fork();
 
-    if(pid == 0) {
-      if(execvp(args[0], args) == -1) {
-        perror("exec");
+      if(pid == 0) {
+        if(execvp(args[0], args) == -1) {
+          perror("exec");
+        }
+      }
+      if(pid > 0) {
+        if(wait(0) == -1) {
+          perror("wait");
+        }
       }
     }
-    if(pid > 0) {
-      if(wait(0) == -1) {
-        perror("wait");
-      }
-    }
-    
     /*for(unsigned int j = 0; j < argVector.size(); j++) {
       if(strcmp(args[j], "exit") == 0) {
         exitIndex = j;
