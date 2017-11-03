@@ -48,20 +48,22 @@ int main() {
         exitIndex = i;
       }
     }
-    //CHECK IF USER INPUTS EXIT ONLY`
-    if((strcmp(args[0], "exit") == 0)) {
-      Exit* userExit = new Exit();
-      userExit->execute();
+    //CHECK IF USER INPUTS EXIT ONLY and no other commands
+    if((strcmp(args[0], "exit") == 0)) { //if exit is found
+      Exit* userExit = new Exit(); //make new object to call execute
+      userExit->execute(); //call execute to exit terminal
     }
-    else {
+    else { //if exit is not the first command line
       args[argVector.size()] = NULL;
-      for(unsigned int i = 0; i < argVector.size(); i++) {
-        if(strcmp(args[i], "#") == 0) {
-          commentIndex = i;
+
+      for(unsigned int i = 0; i < argVector.size(); i++) { //Parse through commands to find #
+        if(strcmp(args[i], "#") == 0) { //Check
+          commentIndex = i; //find the index where # is located
             for( unsigned j = commentIndex; j <= argVector.size(); j++) {
-              args[j] = NULL;
+            //starting at commentIndex, set # and elements after to null
+              args[j] = NULL; //set all elements after # to null
             }
-          break;
+          break; //break out of the loop to continue
         }
       }
 
