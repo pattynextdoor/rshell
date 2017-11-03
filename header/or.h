@@ -5,7 +5,7 @@
 
 class Or : public Connector {
   public:
-    Or();
+    Or() : Connector(){};
     Or(Base* left, Base* right);
     
     bool execute();

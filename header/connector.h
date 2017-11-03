@@ -9,6 +9,7 @@ class Connector : public Base {
     Base* right;
 
   public:
+    Connector() : Base() {};
     Connector(Base* left, Base* right);
 
     virtual bool execute() = 0;
