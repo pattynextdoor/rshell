@@ -1,0 +1,5 @@
+**/header/*.gch
+**.out
+**/bin/rshell
+**/src/*.swp
+**/tests/output.txt
