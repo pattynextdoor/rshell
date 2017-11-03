@@ -5,4 +5,5 @@ Exit::Exit() {}
 
 bool Exit::execute() {
   exit(0);
+  return true;
 }
