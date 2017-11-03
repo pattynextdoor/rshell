@@ -1,0 +1,7 @@
+ls -a # comment that works
+pwd # comment that doesn't work
+mkdir test # directory
+ls #nospace
+#no commands executed
+date -r 20 # -d # 30
+git status # -h
