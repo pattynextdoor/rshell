@@ -1,5 +1,6 @@
 #include "../header/exit.h"
 #include <iostream>
+#include <stdlib.h>
 
 Exit::Exit() {}
 
