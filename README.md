@@ -3,7 +3,7 @@
 #### Written By
 
 * Patrick Tumbucon ([Github](https://www.github.com/ptumb001))
-* Andrew To ([Github](https://www.github.com/ato004))
+* Andrew To ([Github](https://www.github.com/andrew-t187))
 
 ## Introduction
 
