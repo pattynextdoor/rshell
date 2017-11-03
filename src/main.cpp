@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <stack>
 #include <vector>
 #include <unistd.h>
 #include <stdio.h>
@@ -28,17 +29,39 @@ string prompt() {
 }
 
 int main() {
-  string input;
-  while(input != "exit") {
-    if(input == "exit") {
-      Exit* userExit = new Exit();
-      userExit.execute();
-    }
-  
-    vector<string> argVector;
-    CMD* userCMD = new CMD();
-    input = prompt();
+  /*string input = prompt();
+  //stack<Base*> cmdStack;
+  vector<string> argVector;
 
+  split(argVector, input, is_any_of(" "));
+
+  char* args[argVector.size()];
+
+  for(unsigned i = 0; i < argVector.size(); i++) {
+    args[i] = (char*)argVector.at(i).c_str();
+  }
+  
+  unsigned int exitIndex = 0; 
+  for(unsigned int j = 0; j <argVector.size(); j++) {
+    if(strcmp(args[j], "exit") == 0) {
+      exitIndex = j;
+      cout << exitIndex << endl;
+    }
+  }
+  for( unsigned int j = 0; j < argVector.size(); j++) {
+    if (cmdStack.size() != 3) {
+      CMD* userCMD = new CMD();
+      userCMD = 
+      cout << args[j];
+      cmdStack.push(args[j]);
+    }
+  }*/
+  int exitIndex = 0;
+  
+  while(exitIndex == 0) {
+    vector<string> argVector;
+    string input = prompt();
+    
     split(argVector, input, is_any_of(" "));
 
     char* args[argVector.size()];
@@ -61,21 +84,27 @@ int main() {
         perror("wait");
       }
     }
-  
+    
     for(unsigned int j = 0; j < argVector.size(); j++) {
-      if (argVector.at(j) == ||) {
-        Or* newOr = new Or()
-        userCMD.commands.push_back(newOr);
+      if(strcmp(args[j], "exit") == 0) {
+        exitIndex = j;
       }
-      if (argVector.at(j) == &&) {
-        And newAnd = new And();
-        userCMD.commands.push_back(newAnd);
+    }
+
+    /*for(unsigned int j = 0; j < argVector.size(); j++) {
+      if (argVector.at(j) == "||") {
+        Or* newOr = new Or();
+        userCMD->commands.push_back(newOr);
       }
-      else
+      if (argVector.at(j) == "&&") {
+        And* newAnd = new And();
+        userCMD->commands.push_back(newAnd);
+      }
         //INCOMPLETE
-     }
+    }*/
     
         
  }
+  return 0;
 }
 
