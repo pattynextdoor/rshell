@@ -1,5 +1,5 @@
-ls
-ls -a
+git status
 ls -al
 pwd
 mkdir testdirectory
+exit

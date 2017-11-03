@@ -1,5 +1,6 @@
 #!/bin/bash
 
 cd ..
-rshell < tests/single_command.txt
-
+make
+cat tests/single_command.txt | ./bin/rshell > tests/output.txt
+cd tests
