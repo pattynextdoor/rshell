@@ -5,6 +5,7 @@
 Exit::Exit() {}
 
 bool Exit::execute() {
+  cout << "Exiting Rshell" << endl;
   exit(0);
   return true;
 }
