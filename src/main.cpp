@@ -29,35 +29,9 @@ string prompt() {
 }
 
 int main() {
-  /*string input = prompt();
-  //stack<Base*> cmdStack;
-  vector<string> argVector;
-
-  split(argVector, input, is_any_of(" "));
-
-  char* args[argVector.size()];
-
-  for(unsigned i = 0; i < argVector.size(); i++) {
-    args[i] = (char*)argVector.at(i).c_str();
-  }
-  
-  unsigned int exitIndex = 0; 
-  for(unsigned int j = 0; j <argVector.size(); j++) {
-    if(strcmp(args[j], "exit") == 0) {
-      exitIndex = j;
-      cout << exitIndex << endl;
-    }
-  }
-  for( unsigned int j = 0; j < argVector.size(); j++) {
-    if (cmdStack.size() != 3) {
-      CMD* userCMD = new CMD();
-      userCMD = 
-      cout << args[j];
-      cmdStack.push(args[j]);
-    }
-  }*/
   int exitIndex = 1;
   int commentIndex = 0;  
+
   while(exitIndex != 0) {
     vector<string> argVector;
     string input = prompt();
@@ -74,9 +48,10 @@ int main() {
     for(unsigned int i = 0; i < argVector.size(); i++) {
       if(strcmp(args[i], "#") == 0) {
         commentIndex = i;
-          for( unsigned j = commentIndex; j < argVector.size(); j++) {
+          for( unsigned j = commentIndex; j <= argVector.size(); j++) {
             args[j] = NULL;
           }
+        break;
       }
     }
 
