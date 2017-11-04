@@ -5,3 +5,4 @@ ls #nospace
 #no commands executed
 date -r 20 # -d # 30
 git status # -h
+exit # ok
