@@ -37,33 +37,32 @@ void parse(vector<string> &argVector) {
 void executeCommand(char* args[]) {
   pid_t pid = fork();
 
-  if(pid == 0) {
-    if(execvp(args[0], args) == -1) {
+  if (pid == 0) {
+    if (execvp(args[0], args) == -1) {
       perror("exec");
     }
   }
-  if(pid > 0) {
-    if(wait(0) == -1) {
+  if (pid > 0) {
+    if (wait(0) == -1) {
       perror("wait");
     }
   }
 }
 
 bool isExit(vector<string> argVector) {
-  if(argVector.at(0) == "exit") { 
+  if (argVector.at(0) == "exit") { 
     return true;
   }
   return false;
 }
 
 int main() {
-    
   while(1) {
     vector<string> argVector;
     parse(argVector);
     
     // Check if user inputs exit
-    if(isExit(argVector)) { 
+    if (isExit(argVector)) { 
       Exit* userExit = new Exit(); 
       
       //call execute to exit terminal
@@ -73,15 +72,15 @@ int main() {
     char* args[500];
 
     // Typecast string tokens into syscall-compatible char* array
-    for(unsigned i = 0; i < argVector.size(); i++) {
+    for (unsigned i = 0; i < argVector.size(); i++) {
       args[i] = (char*)argVector.at(i).c_str();
     }
     args[argVector.size()] = NULL;
     // Parse through commands to find comment character #
-    for(unsigned int i = 0; i < argVector.size(); i++) { 
-      if(strcmp(args[i], "#") == 0) { 
+    for (unsigned int i = 0; i < argVector.size(); i++) { 
+      if (strcmp(args[i], "#") == 0) { 
         int commentIndex = i; 
-          for( unsigned j = commentIndex; j <= argVector.size(); j++) {
+          for (unsigned j = commentIndex; j <= argVector.size(); j++) {
             // Starting at commentIndex, set # and elements after to null
             args[j] = NULL; 
           }
