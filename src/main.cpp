@@ -12,6 +12,8 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include "../header/or.h"
+#include "../header/cmd.h"
+#include "../header/command.h"
 #include "../header/exit.h"
 #include "../header/and.h"
 #include "../header/semicolon.h"
@@ -29,9 +31,29 @@ string prompt() {
 }
 
 // Using Boost's split() to parse string 
-void parse(vector<string> &argVector) {
+void parse(vector<Base*> &commands) {
   string input = prompt();
+  vector<string> argVector;
   split(argVector, input, is_any_of(" "));
+
+  for(unsigned i = 0; i < argVector.size(); i++) {
+    if(argVector.at(i) == "&&") {
+      And* newAnd = new And();
+      commands.push_back(newAnd);
+    }
+    else if (argVector.at(i) == "||") {
+      Or* newOr = new Or();
+      commands.push_back(newOr);
+    }
+    else if (argVector.at(i) == ";") {
+      Semicolon* newSemi = new Semicolon();
+      commands.push_back(newSemi);
+    }
+    else {
+      Command* newCommand = new Command(argVector.at(i));
+      commands.push_back(newCommand);
+    }
+  }
 }
 
 void executeCommand(char* args[]) {
@@ -49,8 +71,10 @@ void executeCommand(char* args[]) {
   }
 }
 
-bool isExit(vector<string> argVector) {
-  if (argVector.at(0) == "exit") { 
+bool isExit(vector<Base*> commands) {
+  cout << "Before if" << endl;
+  if (commands.at(0)->value == "exit") {
+    cout << "After if" << endl;
     return true;
   }
   return false;
@@ -58,11 +82,13 @@ bool isExit(vector<string> argVector) {
 
 int main() {
   while(1) {
-    vector<string> argVector;
-    parse(argVector);
-    
+//    vector<string> argVector;
+    CMD* currCommand = new CMD(); 
+    parse(currCommand->commands);
+    cout << "Before if statement" << endl; 
     // Check if user inputs exit
-    if (isExit(argVector)) { 
+    if (isExit(currCommand->commands)) { 
+      cout << "After if statement" << endl;
       Exit* userExit = new Exit(); 
       
       //call execute to exit terminal
@@ -72,15 +98,16 @@ int main() {
     char* args[500];
 
     // Typecast string tokens into syscall-compatible char* array
-    for (unsigned i = 0; i < argVector.size(); i++) {
-      args[i] = (char*)argVector.at(i).c_str();
+    for (unsigned i = 0; i < currCommand->commands.size(); i++) {
+      args[i] = (char*)currCommand->commands.at(i)->value.c_str();
     }
-    args[argVector.size()] = NULL;
+
+    args[currCommand->commands.size()] = NULL;
     // Parse through commands to find comment character #
-    for (unsigned int i = 0; i < argVector.size(); i++) { 
+    for (unsigned int i = 0; i < currCommand->commands.size(); i++) { 
       if (strcmp(args[i], "#") == 0) { 
         int commentIndex = i; 
-          for (unsigned j = commentIndex; j <= argVector.size(); j++) {
+          for (unsigned j = commentIndex; j <= currCommand->commands.size(); j++) {
             // Starting at commentIndex, set # and elements after to null
             args[j] = NULL; 
           }
