@@ -5,7 +5,7 @@
 
 class Semicolon : public Connector {
   public:
-    Semicolon();
+    Semicolon() : Connector() {};
     Semicolon(Base* left, Base* right);
     
     bool execute();
