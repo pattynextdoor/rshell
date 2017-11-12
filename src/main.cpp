@@ -72,9 +72,7 @@ void executeCommand(char* args[]) {
 }
 
 bool isExit(vector<Base*> commands) {
-  cout << "Before if" << endl;
   if (commands.at(0)->value == "exit") {
-    cout << "After if" << endl;
     return true;
   }
   return false;
@@ -85,10 +83,8 @@ int main() {
 //    vector<string> argVector;
     CMD* currCommand = new CMD(); 
     parse(currCommand->commands);
-    cout << "Before if statement" << endl; 
     // Check if user inputs exit
     if (isExit(currCommand->commands)) { 
-      cout << "After if statement" << endl;
       Exit* userExit = new Exit(); 
       
       //call execute to exit terminal
