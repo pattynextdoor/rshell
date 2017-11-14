@@ -56,7 +56,31 @@ void parse(vector<Base*> &commands) {
   }
 }
 
-void executeCommand(char* args[]) {
+void executeCommand(char* args[], unsigned size) {
+  for (unsigned i = 0; i < size; i++) {
+    cout << "Reached for loop. i value is: ";
+    cout << i << endl;
+    if (strcmp(args[i], ";") == 0) {
+      char* leftArgs[250];
+      char* rightArgs[250];
+      //execute args[] before i
+      for (unsigned j = 0; j < i; j++) {
+        cout << "Populating left. j value is: ";
+        cout << j << endl;
+        leftArgs[j] = args[j];
+      }
+      //execute args[] after i
+      for (unsigned j =  i + 1; j < size; j++) {
+        cout << "Populating right. j value is: ";
+        cout << j << endl;
+        rightArgs[j] = args[j];
+      }
+      executeCommand(leftArgs, i); 
+      executeCommand(rightArgs, size - (i + 1));
+    }
+  }
+
+  cout << "uh lmoa" << endl;
   pid_t pid = fork();
 
   if (pid == 0) {
@@ -80,13 +104,11 @@ bool isExit(vector<Base*> commands) {
 
 int main() {
   while(1) {
-//    vector<string> argVector;
     CMD* currCommand = new CMD(); 
     parse(currCommand->commands);
     // Check if user inputs exit
     if (isExit(currCommand->commands)) { 
       Exit* userExit = new Exit(); 
-      
       //call execute to exit terminal
       userExit->execute(); 
     }
@@ -111,8 +133,7 @@ int main() {
       }
     }
     // Function for syscalls
-    executeCommand(args);    
+    executeCommand(args, currCommand->commands.size());    
   }
   return 0;
 }
-
