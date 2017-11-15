@@ -48,7 +48,7 @@ void parse(vector<string> &commands) {
 }
 
 bool executeCommand(vector<string> commands) {
-  for (int i = 0; i < commands.size(); i++) {
+  for (unsigned i = 0; i < commands.size(); i++) {
     if (commands.at(i) == ";" || commands.at(i).back() == ';') {
       if(commands.at(i).back() == ';') {
         commands.at(i) = commands.at(i).substr(0, commands.at(i).size() - 2);
@@ -67,13 +67,17 @@ bool executeCommand(vector<string> commands) {
     }
     else if(commands.at(i) == "||") {
       vector<string> lhs;
-      lhs.push_back(commands.at(i - 1));
+      for(unsigned j = 0; j < i; ++j) {
+        lhs.push_back(commands.at(j));
+      }
       if(executeCommand(lhs) !=  false) {
         return true;
       }
       else {
         vector<string> rhs;
-        rhs.push_back(commands.at(i + 1));
+        for(unsigned j = i + 1; j < commands.size(); j++) {
+          rhs.push_back(commands.at(j));
+        }
         if(executeCommand(rhs) != false) {
           return true;
         }
