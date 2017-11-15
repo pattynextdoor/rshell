@@ -11,12 +11,11 @@
 #include <boost/tokenizer.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
-#include "../header/or.h"
 #include "../header/cmd.h"
-#include "../header/command.h"
 #include "../header/exit.h"
-#include "../header/and.h"
-#include "../header/semicolon.h"
+//#include "../header/or.h"
+//#include "../header/and.h"
+//#include "../header/semicolon.h"
 
 using namespace std;
 using namespace boost;
@@ -31,61 +30,71 @@ string prompt() {
 }
 
 // Using Boost's split() to parse string 
-void parse(vector<Base*> &commands) {
+void parse(vector<string> &commands) {
   string input = prompt();
-  vector<string> argVector;
-  split(argVector, input, is_any_of(" "));
+  split(commands, input, is_any_of(" "));
 
-  for(unsigned i = 0; i < argVector.size(); i++) {
-    if(argVector.at(i) == "&&") {
-      And* newAnd = new And();
-      commands.push_back(newAnd);
+  for(unsigned i = 0; i < commands.size(); i++) {
+    if(commands.at(i) == "&&") {
+      //TODO: Implement And
     }
-    else if (argVector.at(i) == "||") {
-      Or* newOr = new Or();
-      commands.push_back(newOr);
+    else if (commands.at(i) == "||") {
+      //TODO: Implement Or
     }
-    else if (argVector.at(i) == ";") {
-      Semicolon* newSemi = new Semicolon();
-      commands.push_back(newSemi);
-    }
-    else {
-      Command* newCommand = new Command(argVector.at(i));
-      commands.push_back(newCommand);
+    else if (commands.at(i) == ";") {
+      //TODO: Implement Semicolon
     }
   }
 }
 
-void executeCommand(char* args[], unsigned size) {
-  for (unsigned i = 0; i < size; i++) {
-    cout << "Reached for loop. i value is: ";
-    cout << i << endl;
-    if (strcmp(args[i], ";") == 0) {
-      char* leftArgs[250];
-      char* rightArgs[250];
-      //execute args[] before i
+bool executeCommand(vector<string> commands) {
+  for (int i = 0; i < commands.size(); i++) {
+    if (commands.at(i) == ";" || commands.at(i).back() == ';') {
+      if(commands.at(i).back() == ';') {
+        commands.at(i) = commands.at(i).substr(0, commands.at(i).size() - 2);
+      }
+      vector<string> lhs;
+      vector<string> rhs;
       for (unsigned j = 0; j < i; j++) {
-        cout << "Populating left. j value is: ";
-        cout << j << endl;
-        leftArgs[j] = args[j];
+        lhs.push_back(commands.at(j));
       }
-      //execute args[] after i
-      for (unsigned j =  i + 1; j < size; j++) {
-        cout << "Populating right. j value is: ";
-        cout << j << endl;
-        rightArgs[j] = args[j];
+      for (unsigned j =  i + 1; j < commands.size(); j++) {
+        rhs.push_back(commands.at(j));
       }
-      executeCommand(leftArgs, i); 
-      executeCommand(rightArgs, size - (i + 1));
+      executeCommand(lhs); 
+      executeCommand(rhs);
+      return true;
+    }
+    else if(commands.at(i) == "||") {
+      vector<string> lhs;
+      lhs.push_back(commands.at(i - 1));
+      if(executeCommand(lhs) !=  false) {
+        return true;
+      }
+      else {
+        vector<string> rhs;
+        rhs.push_back(commands.at(i + 1));
+        if(executeCommand(rhs) != false) {
+          return true;
+        }
+      }
     }
   }
 
-  cout << "uh lmoa" << endl;
+  char* args[500];
+
+  for (unsigned i = 0; i < commands.size(); i++) {
+    args[i] = (char*)commands.at(i).c_str();
+  }
+
+  args[commands.size()] = 0;
+
   pid_t pid = fork();
 
   if (pid == 0) {
     if (execvp(args[0], args) == -1) {
       perror("exec");
+      return false;
     }
   }
   if (pid > 0) {
@@ -93,10 +102,13 @@ void executeCommand(char* args[], unsigned size) {
       perror("wait");
     }
   }
+
+ // }
+  return true;
 }
 
-bool isExit(vector<Base*> commands) {
-  if (commands.at(0)->value == "exit") {
+bool isExit(vector<string> commands) {
+  if (commands.at(0) == "exit") {
     return true;
   }
   return false;
@@ -109,31 +121,22 @@ int main() {
     // Check if user inputs exit
     if (isExit(currCommand->commands)) { 
       Exit* userExit = new Exit(); 
-      //call execute to exit terminal
+      // Call execute to exit terminal
       userExit->execute(); 
     }
-
-    char* args[500];
-
-    // Typecast string tokens into syscall-compatible char* array
-    for (unsigned i = 0; i < currCommand->commands.size(); i++) {
-      args[i] = (char*)currCommand->commands.at(i)->value.c_str();
-    }
-
-    args[currCommand->commands.size()] = NULL;
     // Parse through commands to find comment character #
     for (unsigned int i = 0; i < currCommand->commands.size(); i++) { 
-      if (strcmp(args[i], "#") == 0) { 
+      if (currCommand->commands.at(i) == "#") { 
         int commentIndex = i; 
           for (unsigned j = commentIndex; j <= currCommand->commands.size(); j++) {
             // Starting at commentIndex, set # and elements after to null
-            args[j] = NULL; 
+            currCommand->commands.at(j) = ""; 
           }
         break; 
       }
     }
     // Function for syscalls
-    executeCommand(args, currCommand->commands.size());    
+    executeCommand(currCommand->commands);    
   }
   return 0;
 }
