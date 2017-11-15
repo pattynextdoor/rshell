@@ -8,7 +8,7 @@
 
 class CMD : public Base {
   public:
-    vector<Base*> commands;
+    vector<string> commands;
     CMD();
     bool execute();
 };
