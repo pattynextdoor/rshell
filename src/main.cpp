@@ -124,6 +124,19 @@ bool executeCommand(vector<string> commands) {
       }
     }
 
+    else if(commands.at(i) == "&&") {
+      vector<string> lhs;
+      vector<string> rhs;
+      for(unsigned j = 0; j < i; j++) {
+        lhs.push_back(commands.at(j));
+      }
+      for(unsigned j = i + 1; j < commands.size(); j++) {
+        rhs.push_back(commands.at(j));
+      }
+      if(executeCommand(lhs) && executeCommand(rhs)) {
+        return true;
+      }
+    }
   }
 
   char* args[500];
@@ -147,7 +160,6 @@ bool executeCommand(vector<string> commands) {
       perror("wait");
     }
   }
-
   return true;
 }
 
