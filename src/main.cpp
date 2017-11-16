@@ -3,6 +3,7 @@
 #include <cstring>
 #include <stack>
 #include <vector>
+#include <string.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/wait.h>
@@ -92,38 +93,45 @@ bool executeCommand(vector<string> commands) {
     else if(commands.at(i) == "test" || ((commands.at(i) == "[") && (commands.at(i + 3) == "]")) ) {
       if(commands.at(i + 1) == "-e") {
         if(fileExists(commands.at(i + 2)) == true) {
-          cout << "(True)";
+          cout << "(True)" << endl;
+          return true;
         }
         else {
           cout << "(False)" << endl;
+          return false;
         }
       }
       else if(commands.at(i + 1) == "-d") {
         if(isDirectory(commands.at(i + 2)) == true) {
-           cout << "(True)" << endl;
+          cout << "(True)" << endl;
+          return true;
         }
         else {
           cout << "(False)" << endl;
+          return false;
         }
       }
       else if(commands.at(i + 1) == "-f") {
         if(isFile(commands.at(i + 2)) == true) {
           cout << "(True)" << endl;
+          return true;
         }
         else {
           cout << "(False)" << endl;
+          return false;
         }
       }
       else {
         if(fileExists(commands.at(i + 1)) == true) {
           cout << "(True)" << endl;
+          return true;
         }
         else {
           cout << "(False)" << endl;
+          return false;
         }
       }
     }
-
     else if(commands.at(i) == "&&") {
       vector<string> lhs;
       vector<string> rhs;
@@ -224,7 +232,7 @@ int main() {
     // Parse through commands to find comment character #
     for (unsigned int i = 0; i < currCommand->commands.size(); i++) { 
       if (currCommand->commands.at(i) == "#") { 
-        int commentIndex = i; 
+        int commentIndex = i;
           for (unsigned j = commentIndex; j < currCommand->commands.size(); j++) {
             // Starting at commentIndex, set # and elements after to null
             currCommand->commands.at(j) = ""; 
@@ -233,7 +241,7 @@ int main() {
       }
     }
     // Function for syscalls
-    executeCommand(currCommand->commands);    
+    executeCommand(currCommand->commands);   
   }
   return 0;
 }
