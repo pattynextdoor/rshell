@@ -223,12 +223,16 @@ int main() {
     }
     // Parse through commands to find comment character #
     for (unsigned int i = 0; i < currCommand->commands.size(); i++) { 
-      if (currCommand->commands.at(i) == "#") { 
-        int commentIndex = i; 
-          for (unsigned j = commentIndex; j < currCommand->commands.size(); j++) {
-            // Starting at commentIndex, set # and elements after to null
-            currCommand->commands.at(j) = ""; 
-          }
+      if (currCommand->commands.at(i) == "#" || currCommand->commands.at(i).front() == '#') { 
+        unsigned commentIndex = i; 
+        if (currCommand->commands.at(commentIndex).front() == '#') {
+          currCommand->commands.at(commentIndex) = currCommand->commands.at(commentIndex).substr(1);
+        }
+
+        for (unsigned j = currCommand->commands.size() - 1; j >= commentIndex; j--) {
+          // Starting at commentIndex, set # and elements after to null
+          currCommand->commands.pop_back();
+        }
         break; 
       }
     }
