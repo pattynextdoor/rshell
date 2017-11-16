@@ -8,6 +8,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 #include <boost/tokenizer.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
@@ -19,6 +20,8 @@
 
 using namespace std;
 using namespace boost;
+
+bool fileExists(string& fileName);
 
 // Prompt user and return input string
 string prompt() {
@@ -70,19 +73,27 @@ bool executeCommand(vector<string> commands) {
       for(unsigned j = 0; j < i; ++j) {
         lhs.push_back(commands.at(j));
       }
-      if(executeCommand(lhs) !=  false) {
-        return true;
+      if(executeCommand(lhs)) {
+          return true;
       }
       else {
         vector<string> rhs;
         for(unsigned j = i + 1; j < commands.size(); j++) {
           rhs.push_back(commands.at(j));
         }
-        if(executeCommand(rhs) != false) {
+        if(executeCommand(rhs)) {
           return true;
         }
       }
     }
+    else if(commands.at(i) == "test") {
+      if(commands.at(i + 1) == "-e") {
+        if (fileExists(commands.at(i + 2)) == true) {
+          cout << "file exists";
+        }
+      }
+    }
+
   }
 
   char* args[500];
@@ -107,8 +118,12 @@ bool executeCommand(vector<string> commands) {
     }
   }
 
- // }
   return true;
+}
+
+bool fileExists(string& fileName) {
+  struct stat buf;
+  return (stat(fileName.c_str(), &buf) == 0);
 }
 
 bool isExit(vector<string> commands) {
@@ -132,7 +147,7 @@ int main() {
     for (unsigned int i = 0; i < currCommand->commands.size(); i++) { 
       if (currCommand->commands.at(i) == "#") { 
         int commentIndex = i; 
-          for (unsigned j = commentIndex; j <= currCommand->commands.size(); j++) {
+          for (unsigned j = commentIndex; j < currCommand->commands.size(); j++) {
             // Starting at commentIndex, set # and elements after to null
             currCommand->commands.at(j) = ""; 
           }
