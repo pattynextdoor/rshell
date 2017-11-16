@@ -21,7 +21,10 @@
 using namespace std;
 using namespace boost;
 
+//Function instantiations for checking existence of a path
 bool fileExists(string& fileName);
+bool isDirectory(string& fileName);
+bool isFile(string& fileName);
 
 // Prompt user and return input string
 string prompt() {
@@ -86,10 +89,37 @@ bool executeCommand(vector<string> commands) {
         }
       }
     }
-    else if(commands.at(i) == "test") {
+    else if(commands.at(i) == "test" || ((commands.at(i) == "[") && (commands.at(i + 3) == "]")) ) {
       if(commands.at(i + 1) == "-e") {
-        if (fileExists(commands.at(i + 2)) == true) {
-          cout << "file exists";
+        if(fileExists(commands.at(i + 2)) == true) {
+          cout << "(True)";
+        }
+        else {
+          cout << "(False)" << endl;
+        }
+      }
+      else if(commands.at(i + 1) == "-d") {
+        if(isDirectory(commands.at(i + 2)) == true) {
+           cout << "(True)" << endl;
+        }
+        else {
+          cout << "(False)" << endl;
+        }
+      }
+      else if(commands.at(i + 1) == "-f") {
+        if(isFile(commands.at(i + 2)) == true) {
+          cout << "(True)" << endl;
+        }
+        else {
+          cout << "(False)" << endl;
+        }
+      }
+      else {
+        if(fileExists(commands.at(i + 1)) == true) {
+          cout << "(True)" << endl;
+        }
+        else {
+          cout << "(False)" << endl;
         }
       }
     }
@@ -121,10 +151,46 @@ bool executeCommand(vector<string> commands) {
   return true;
 }
 
+//---------------------------------------------------
+//Functions for path/file/directory existance
+//Passes in filename and returns true if found, false if not
+
 bool fileExists(string& fileName) {
   struct stat buf;
+
   return (stat(fileName.c_str(), &buf) == 0);
 }
+
+bool isDirectory(string& fileName) {
+  struct stat path;
+  
+  if( stat(fileName.c_str(), &path) == 0) {
+    if(path.st_mode & S_IFDIR) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  
+  return false;
+}
+
+bool isFile(string& fileName) {
+  struct stat filePath;
+
+  if( stat(fileName.c_str(), &filePath) == 0) {
+    if(filePath.st_mode & S_IFREG) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  
+  return false;
+}
+//---------------------------------------------------
 
 bool isExit(vector<string> commands) {
   if (commands.at(0) == "exit") {
