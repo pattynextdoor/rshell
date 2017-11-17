@@ -63,7 +63,7 @@ bool executeCommand(vector<string> commands) {
       for(unsigned j = 0; j < commands.size(); j++) {
         //enclosed.push_back(commands.at(j));
         if(commands.at(j).back() == ')') {
-          commands.at(j) = commands.at(j).substr(0, commands.at(j).size() - 2);
+        commands.at(j) = commands.at(j).substr(0, commands.at(j).size() - 1);
           break;
         }
       }
