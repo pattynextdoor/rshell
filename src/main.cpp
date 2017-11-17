@@ -56,6 +56,19 @@ void parse(vector<string> &commands) {
 
 bool executeCommand(vector<string> commands) {
   for (unsigned i = 0; i < commands.size(); i++) {
+    if(commands.at(i).front() == '(') {
+      //vector<string> enclosed;
+      
+      commands.at(i) = commands.at(i).substr(1); 
+      for(unsigned j = 0; j < commands.size(); j++) {
+        //enclosed.push_back(commands.at(j));
+        if(commands.at(j).back() == ')') {
+          commands.at(j) = commands.at(j).substr(0, commands.at(j).size() - 2);
+          break;
+        }
+      }
+    }
+    // Semicolon
     if (commands.at(i) == ";" || commands.at(i).back() == ';') {
       if(commands.at(i).back() == ';') {
         commands.at(i) = commands.at(i).substr(0, commands.at(i).size() - 2);
@@ -72,6 +85,7 @@ bool executeCommand(vector<string> commands) {
       executeCommand(rhs);
       return true;
     }
+    // Or
     else if(commands.at(i) == "||") {
       vector<string> lhs;
       for(unsigned j = 0; j < i; ++j) {
@@ -90,6 +104,21 @@ bool executeCommand(vector<string> commands) {
         }
       }
     }
+    // And
+    else if(commands.at(i) == "&&") {
+      vector<string> lhs;
+      vector<string> rhs;
+      for(unsigned j = 0; j < i; j++) {
+        lhs.push_back(commands.at(j));
+      }
+      for(unsigned j = i + 1; j < commands.size(); j++) {
+        rhs.push_back(commands.at(j));
+      }
+      if(executeCommand(lhs) && executeCommand(rhs)) {
+        return true;
+      }
+    }
+    // Test
     else if(commands.at(i) == "test" || ((commands.at(i) == "[") && (commands.at(i + 3) == "]")) ) {
       if(commands.at(i + 1) == "-e") {
         if(fileExists(commands.at(i + 2)) == true) {
@@ -132,19 +161,7 @@ bool executeCommand(vector<string> commands) {
         }
       }
     }
-    else if(commands.at(i) == "&&") {
-      vector<string> lhs;
-      vector<string> rhs;
-      for(unsigned j = 0; j < i; j++) {
-        lhs.push_back(commands.at(j));
-      }
-      for(unsigned j = i + 1; j < commands.size(); j++) {
-        rhs.push_back(commands.at(j));
-      }
-      if(executeCommand(lhs) && executeCommand(rhs)) {
-        return true;
-      }
-    }
+    
   }
 
   char* args[500];
