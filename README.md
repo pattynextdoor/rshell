@@ -46,4 +46,4 @@ We will be using a composite design strategy where “cmd” and “connector”
 
 ## Bugs
 
-* ~~Comments are parsed as arguments when a space does not follow the '#' ~~
+* ~~Comments are parsed as arguments when a space does not follow the '#'~~
