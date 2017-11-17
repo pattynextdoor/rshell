@@ -35,14 +35,15 @@ We will be using a composite design strategy where “cmd” and “connector”
 ## Features
 
 * Single /bin commands with argument flags
+* File/Directory testing
+* Multiple commands linked with connectors.
 * Git support 
 * Commands with comments appended after a '#'
 
 ## Missing Functionalities
 
-* Connector support
+* Precedence operator support
 
 ## Bugs
 
-* Comments are parsed as arguments when a space does not follow the '#'
-  * `ls #comment` gives output `ls: cannot access #comment: No such file or directory`
+* ~~Comments are parsed as arguments when a space does not follow the '#' ~~
