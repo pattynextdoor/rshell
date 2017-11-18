@@ -5,6 +5,7 @@
 
 class And : public Connector {
   public:
+    string value = "&&";
     And() : Connector() {};
     And(Base* left, Base* right);
 

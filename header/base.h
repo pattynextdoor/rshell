@@ -8,7 +8,8 @@
 using namespace std;
 
 class Base {
-  public: 
+  public:
+    string value;
     virtual bool execute() = 0;
 };
 #endif

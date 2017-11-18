@@ -1,0 +1,14 @@
+(echo A && echo B)
+(git status && date) || echo hi
+echo me || (echo A && echo B)
+(date && ls -a) && (echo A && echo B)
+(rm -r test && echo testremoved) 
+((echo 1) || (echo 2))
+(((echo hello)) || ((echo hi)))
+(test -e main.cpp)
+(test -f main.cpp)
+(test -d iDontExist)
+([ -e main.cpp ])
+() ls -a ) 
+(())
+exit

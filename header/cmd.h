@@ -1,5 +1,5 @@
-#ifndef __COMMAND_H__
-#define __COMMAND_H__
+#ifndef __CMD_H__
+#define __CMD_H__
 
 #include "base.h"
 #include <iostream>
@@ -8,7 +8,7 @@
 
 class CMD : public Base {
   public:
-    vector<Base*> commands;
+    vector<string> commands;
     CMD();
     bool execute();
 };
