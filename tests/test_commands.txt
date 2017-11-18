@@ -8,4 +8,5 @@ test main.cpp
 test -d bin && pwd 
 (test -d tests && echo yes) || pwd 
 ([ -d tests ] && echo yes) || date 
+[ test -e um ]
 exit
