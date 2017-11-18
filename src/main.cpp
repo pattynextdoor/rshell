@@ -41,18 +41,6 @@ string prompt() {
 void parse(vector<string> &commands) {
   string input = prompt();
   split(commands, input, is_any_of(" "));
-
-  for(unsigned i = 0; i < commands.size(); i++) {
-    if(commands.at(i) == "&&") {
-      //TODO: Implement And
-    }
-    else if (commands.at(i) == "||") {
-      //TODO: Implement Or
-    }
-    else if (commands.at(i) == ";") {
-      //TODO: Implement Semicolon
-    }
-  }
 }
 
 bool executeCommand(vector<string> commands) {
@@ -76,12 +64,11 @@ bool executeCommand(vector<string> commands) {
   }
 
   for (unsigned i = 0; i < commands.size(); i++) {
+    // Precedence operators
     if(commands.at(i).front() == '(') {
-      //vector<string> enclosed;
       commands.at(i) = commands.at(i).substr(1);
       depthStack.push(commands.at(i));
       for(unsigned j = 0; j < commands.size(); j++) {
-        //enclosed.push_back(commands.at(j));
         if(commands.at(j).back() == ')') {
         commands.at(j) = commands.at(j).substr(0, commands.at(j).size() - 1);
           break;
@@ -139,9 +126,9 @@ bool executeCommand(vector<string> commands) {
       }
     }
     // Test
-    else if( (commands.at(i) == "test" || ((commands.at(i) == "[") && (commands.at(i + 3) == "]")) ) ) {
+    else if ((commands.at(i) == "test" || ((commands.at(i) == "[") && (commands.at(i + 3) == "]")))) {
       if(commands.at(i + 1) == "-e") {
-        if(fileExists(commands.at(i + 2)) == true) {
+        if(fileExists(commands.at(i + 2))) {
           cout << "(True)" << endl;
           return true;
         }
@@ -151,7 +138,7 @@ bool executeCommand(vector<string> commands) {
         }
       }
       else if(commands.at(i + 1) == "-d") {
-        if(isDirectory(commands.at(i + 2)) == true) {
+        if(isDirectory(commands.at(i + 2))) {
           cout << "(True)" << endl;
           return true;
         }
@@ -161,7 +148,7 @@ bool executeCommand(vector<string> commands) {
         }
       }
       else if(commands.at(i + 1) == "-f") {
-        if(isFile(commands.at(i + 2)) == true) {
+        if(isFile(commands.at(i + 2))) {
           cout << "(True)" << endl;
           return true;
         }
@@ -171,7 +158,7 @@ bool executeCommand(vector<string> commands) {
         }
       }
       else {
-        if(fileExists(commands.at(i + 1)) == true) {
+        if(fileExists(commands.at(i + 1))) {
           cout << "(True)" << endl;
           return true;
         }
@@ -181,22 +168,24 @@ bool executeCommand(vector<string> commands) {
         }
       }
     }
-    
   }
-  
+  // Populate character array with vector contents 
   char* args[500];
 
   for (unsigned i = 0; i < commands.size(); i++) {
     args[i] = (char*)commands.at(i).c_str();
   }
-
+  
+  // Last element set to null
   args[commands.size()] = 0;
 
+  // Execute raw command
   pid_t pid = fork();
 
   if (pid == 0) {
     if (execvp(args[0], args) == -1) {
       perror("exec");
+      // Command did not execute
       return false;
     }
   }
@@ -221,7 +210,7 @@ bool fileExists(string& fileName) {
 bool isDirectory(string& fileName) {
   struct stat path;
   
-  if( stat(fileName.c_str(), &path) == 0) {
+  if (stat(fileName.c_str(), &path) == 0) {
     if(path.st_mode & S_IFDIR) {
       return true;
     }
@@ -229,14 +218,13 @@ bool isDirectory(string& fileName) {
       return false;
     }
   }
-  
   return false;
 }
 
 bool isFile(string& fileName) {
   struct stat filePath;
 
-  if( stat(fileName.c_str(), &filePath) == 0) {
+  if (stat(fileName.c_str(), &filePath) == 0) {
     if(filePath.st_mode & S_IFREG) {
       return true;
     }
