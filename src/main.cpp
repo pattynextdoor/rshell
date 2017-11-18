@@ -2,6 +2,7 @@
 #include <string>
 #include <cstring>
 #include <stack>
+#include <queue>
 #include <vector>
 #include <string.h>
 #include <unistd.h>
@@ -55,11 +56,30 @@ void parse(vector<string> &commands) {
 }
 
 bool executeCommand(vector<string> commands) {
+  stack<string> depthStack;
+  int beginCount = 0;
+  int closeCount = 0;
+
+  //check number of parenthesis before command execution
+  for(unsigned i = 0; i < commands.size(); i++) {
+    if(commands.at(i).front() == '(') {
+      ++beginCount;
+    }
+    if(commands.at(i).back() == ')') {
+      ++closeCount;
+    }
+  }
+  
+  if(beginCount != closeCount) {
+    cout << "Error, wrong amount of parenthesis" << endl;
+    return false;
+  }
+
   for (unsigned i = 0; i < commands.size(); i++) {
     if(commands.at(i).front() == '(') {
       //vector<string> enclosed;
-      
-      commands.at(i) = commands.at(i).substr(1); 
+      commands.at(i) = commands.at(i).substr(1);
+      depthStack.push(commands.at(i));
       for(unsigned j = 0; j < commands.size(); j++) {
         //enclosed.push_back(commands.at(j));
         if(commands.at(j).back() == ')') {
@@ -119,7 +139,7 @@ bool executeCommand(vector<string> commands) {
       }
     }
     // Test
-    else if(commands.at(i) == "test" || ((commands.at(i) == "[") && (commands.at(i + 3) == "]")) ) {
+    else if( (commands.at(i) == "test" || ((commands.at(i) == "[") && (commands.at(i + 3) == "]")) ) ) {
       if(commands.at(i + 1) == "-e") {
         if(fileExists(commands.at(i + 2)) == true) {
           cout << "(True)" << endl;
@@ -163,7 +183,7 @@ bool executeCommand(vector<string> commands) {
     }
     
   }
-
+  
   char* args[500];
 
   for (unsigned i = 0; i < commands.size(); i++) {
