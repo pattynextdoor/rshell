@@ -8,7 +8,7 @@
 
 ## Introduction
 
-Rshell is a command line interface written in C++. It will execute bash-like commands with support for connectors (||, &&, ;) and comments (#). 
+Rshell is a command line interface written in C++. It will execute bash-like commands with support for connectors ("||", "&&", ";") and comments ("#"). This shell also supports path testing and precedence of operations.  
 
 ## Usage
 
@@ -37,13 +37,16 @@ We will be using a composite design strategy where “cmd” and “connector”
 * Single /bin commands with argument flags
 * File/Directory testing
 * Multiple commands linked with connectors.
+* First level precedence operator
 * Git support 
 * Commands with comments appended after a '#'
 
 ## Missing Functionalities
 
-* Precedence operator support
+* Nested precedence operator support
 
 ## Bugs
 
 * ~~Comments are parsed as arguments when a space does not follow the '#'~~
+* Out of range error when missing an argument with test flags
+  * Example: `test -e` returns an out-of-range error
