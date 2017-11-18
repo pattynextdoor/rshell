@@ -1,0 +1,11 @@
+test main.cpp
+[ main.cpp ]
+[ main.cpp ] && echo main.cpp is here
+[ -d test ]
+[ -d tests ] || echo hi 
+[ -f main.cpp ]
+[ -f main.cpp ] && git status 
+test -d bin && pwd 
+(test -d tests && echo yes) || pwd 
+([ -d tests ] && echo yes) || date 
+exit
