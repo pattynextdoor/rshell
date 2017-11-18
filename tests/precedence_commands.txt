@@ -9,4 +9,6 @@ echo me || (echo A && echo B)
 (test -f main.cpp)
 (test -d iDontExist)
 ([ -e main.cpp ])
+() ls -a ) 
+(())
 exit
