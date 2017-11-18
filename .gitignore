@@ -3,3 +3,4 @@
 **/bin/rshell
 **/src/*.swp
 **/tests/output.txt
+**/.DS_Store
