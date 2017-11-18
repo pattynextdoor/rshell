@@ -59,7 +59,7 @@ bool executeCommand(vector<string> commands) {
   }
   
   if(beginCount != closeCount) {
-    cout << "Error, wrong amount of parenthesis" << endl;
+    cout << "Error: Parentheses don't match." << endl;
     return false;
   }
 
