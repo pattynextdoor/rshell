@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+#include <fcntl.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <boost/tokenizer.hpp>
@@ -237,6 +238,26 @@ bool executeCommand(vector<string> commands) {
           return false;
         }
       }
+    }
+    else if(commands.at(i) == ">") {
+      vector<string> lhs;
+      string rhs = commands.at(i + 1);
+
+      for (int j = 0; j != i; j++) {
+        lhs.push_back(commands.at(j));
+      }
+
+      int fd = open((char*)rhs.c_str(), O_CREAT | O_WRONLY, S_IRWXU);
+      if (fd < 0) {
+        perror("fd");
+        return false;
+      }
+      if (dup2(fd, 1) < 0) {
+        perror("dup2");
+        return false;
+      }
+      executeCommand(lhs);
+      close(fd);
     }
   }
   // Populate character array with vector contents 
