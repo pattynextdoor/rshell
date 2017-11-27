@@ -43,13 +43,62 @@ void parse(vector<string> &commands) {
   split(commands, input, is_any_of(" "));
 }
 
+bool executeCommand(vector<string> commands);
+
+void semicolon(vector<string> commands, unsigned i) {
+  if (commands.at(i).back() == ';') {
+    commands.at(i) = commands.at(i).substr(0, commands.at(i).size() - 1);
+  }
+  vector<string> lhs;
+  vector<string> rhs;
+
+  if(i == 0) {
+    lhs.push_back(commands.at(0));
+  }
+  else {
+    for (int j = 0; j < i; j++) {
+      lhs.push_back(commands.at(j));
+    }
+  }
+  
+  for (int j =  i + 1; j < commands.size(); j++) {
+    rhs.push_back(commands.at(j));
+  }
+  executeCommand(lhs); 
+  executeCommand(rhs);
+}
+
+bool isLogicalOperator(vector<string> commands, int index) {
+  if(index <=  -1 || index >= commands.size()) {
+    return false;
+  }
+  if(commands.at(index) == "||" || commands.at(index) == "&&" || commands.at(index) == ";" || commands.at(index).back() == ';') {
+    return true;
+  }
+  return false;
+}
+
+vector<string> findOperators(vector<string> commands) {
+  vector<string> operators;
+
+  for(int index = 0; index < commands.size(); index++) {
+    if(isLogicalOperator(commands, index)) {
+      operators.push_back(commands.at(index));
+    }
+  } 
+  return operators;
+}
+
 bool executeCommand(vector<string> commands) {
+  vector<string> operators = findOperators(commands);
+  
+
   stack<string> depthStack;
   int beginCount = 0;
   int closeCount = 0;
 
   //check number of parenthesis before command execution
-  for(unsigned i = 0; i < commands.size(); i++) {
+  for(int i = 0; i < commands.size(); i++) {
     if(commands.at(i).front() == '(') {
       ++beginCount;
     }
@@ -63,8 +112,28 @@ bool executeCommand(vector<string> commands) {
     return false;
   }
 
-  for (unsigned i = 0; i < commands.size(); i++) {
-    // Precedence operators
+  for (int i = 0; i < commands.size(); i++) {
+  
+    if(!operators.empty()) {
+      int operatorIndex;
+
+      for (int j = 0; j < operators.size(); j++) {
+        if(operators.at(j) == "||") {
+          operatorIndex = j;
+        } 
+      }
+      for (int j = 0; j < operators.size(); j++) {
+        if(operators.at(j) == "&&") {
+          operatorIndex = j;
+        }
+      }
+      for (int j = 0; j < commands.size(); j++) {
+        if (commands.at(j) == operators.at(operatorIndex)) {
+          i = j;
+        }
+      }
+    }
+        // Precedence operators
     if(commands.at(i).front() == '(') {
       commands.at(i) = commands.at(i).substr(1);
       depthStack.push(commands.at(i));
@@ -77,53 +146,54 @@ bool executeCommand(vector<string> commands) {
     }
     // Semicolon
     if (commands.at(i) == ";" || commands.at(i).back() == ';') {
-      if(commands.at(i).back() == ';') {
-        commands.at(i) = commands.at(i).substr(0, commands.at(i).size() - 2);
-      }
+      semicolon(commands, i);
+      return true;
+    }
+        // And
+    else if(commands.at(i) == "&&") {
       vector<string> lhs;
       vector<string> rhs;
-      for (unsigned j = 0; j < i; j++) {
-        lhs.push_back(commands.at(j));
+      
+      stack<string> lhsStack;
+      for(int j = i - 1;  j >= 0 ; j--) {
+        lhsStack.push(commands.at(j));
       }
-      for (unsigned j =  i + 1; j < commands.size(); j++) {
+      while(!lhsStack.empty()) {
+        lhs.push_back(lhsStack.top());
+        lhsStack.pop();
+      }
+      for(int j = i + 1; j < commands.size(); j++) {
         rhs.push_back(commands.at(j));
       }
-      executeCommand(lhs); 
-      executeCommand(rhs);
-      return true;
+      if(executeCommand(lhs) && executeCommand(rhs)) {
+        return true;
+      }
     }
     // Or
     else if(commands.at(i) == "||") {
       vector<string> lhs;
-      for(unsigned j = 0; j < i; ++j) {
-        lhs.push_back(commands.at(j));
+      stack<string> lhsStack;
+      for(int j = i - 1; j >= 0; j--) {
+        lhsStack.push(commands.at(j));
+      }
+      while(!lhsStack.empty()) {
+        lhs.push_back(lhsStack.top());
+        lhsStack.pop();
       }
       if(executeCommand(lhs)) {
-          return true;
+          return true ;
       }
       else {
         vector<string> rhs;
-        for(unsigned j = i + 1; j < commands.size(); j++) {
+        for(int j = i + 1; j < commands.size(); j++) {
+          cout << commands.at(j) << endl;
           rhs.push_back(commands.at(j));
         }
         if(executeCommand(rhs)) {
           return true;
         }
       }
-    }
-    // And
-    else if(commands.at(i) == "&&") {
-      vector<string> lhs;
-      vector<string> rhs;
-      for(unsigned j = 0; j < i; j++) {
-        lhs.push_back(commands.at(j));
-      }
-      for(unsigned j = i + 1; j < commands.size(); j++) {
-        rhs.push_back(commands.at(j));
-      }
-      if(executeCommand(lhs) && executeCommand(rhs)) {
-        return true;
-      }
+      return false;
     }
     // Test
     else if ((commands.at(i) == "test" || ((commands.at(i) == "[") && (commands.at(i + 3) == "]")))) {
