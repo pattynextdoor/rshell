@@ -246,9 +246,10 @@ bool executeCommand(vector<string> commands) {
       for (int j = 0; j != i; j++) {
         lhs.push_back(commands.at(j));
       }
+
       int saved_stdout;
       saved_stdout = dup(1);
-      int fd = open((char*)rhs.c_str(), O_CREAT | O_WRONLY, S_IRWXU);
+      int fd = open((char*)rhs.c_str(), O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
       if (fd < 0) {
         perror("fd");
         return false;
@@ -258,9 +259,17 @@ bool executeCommand(vector<string> commands) {
         return false;
       }
       executeCommand(lhs);
-      dup2(saved_stdout, 1);
+
+      if( dup2(saved_stdout, 1) < 0) {
+        perror("dup2");
+        return false;
+      }
+
       close(saved_stdout);
       return true;      
+    }
+    else if(commands.at(i) == ">>") {
+      return true;
     }
   }
   // Populate character array with vector contents 
