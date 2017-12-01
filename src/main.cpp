@@ -304,7 +304,6 @@ bool executeCommand(vector<string> commands) {
       string entry;
       if (myFile.is_open()) {
         while (getline(myFile, entry)) {
-          cout << entry << endl;
           vector<string> cpy;
           cpy.push_back(commands.at(0));
           cpy.push_back(entry);
