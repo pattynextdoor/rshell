@@ -57,12 +57,12 @@ void semicolon(vector<string> commands, unsigned i) {
     lhs.push_back(commands.at(0));
   }
   else {
-    for (int j = 0; j < i; j++) {
+    for (unsigned int j = 0; j < i; j++) {
       lhs.push_back(commands.at(j));
     }
   }
   
-  for (int j =  i + 1; j < commands.size(); j++) {
+  for (unsigned int j =  i + 1; j < commands.size(); j++) {
     rhs.push_back(commands.at(j));
   }
   executeCommand(lhs); 
@@ -70,7 +70,8 @@ void semicolon(vector<string> commands, unsigned i) {
 }
 
 bool isLogicalOperator(vector<string> commands, int index) {
-  if(index <=  -1 || index >= commands.size()) {
+  int  size = commands.size();
+  if(index <=  -1 || index >= size) {
     return false;
   }
   if(commands.at(index) == "||" || commands.at(index) == "&&" || commands.at(index) == ";" || commands.at(index).back() == ';') {
@@ -82,7 +83,7 @@ bool isLogicalOperator(vector<string> commands, int index) {
 vector<string> findOperators(vector<string> commands) {
   vector<string> operators;
 
-  for(int index = 0; index < commands.size(); index++) {
+  for(unsigned int index = 0; index < commands.size(); index++) {
     if(isLogicalOperator(commands, index)) {
       operators.push_back(commands.at(index));
     }
@@ -99,7 +100,7 @@ bool executeCommand(vector<string> commands) {
   int closeCount = 0;
 
   //check number of parenthesis before command execution
-  for(int i = 0; i < commands.size(); i++) {
+  for(unsigned int i = 0; i < commands.size(); i++) {
     if(commands.at(i).front() == '(') {
       ++beginCount;
     }
@@ -113,22 +114,22 @@ bool executeCommand(vector<string> commands) {
     return false;
   }
 
-  for (int i = 0; i < commands.size(); i++) {
+  for (unsigned int i = 0; i < commands.size(); i++) {
   
     if(!operators.empty()) {
       int operatorIndex;
 
-      for (int j = 0; j < operators.size(); j++) {
+      for (unsigned int j = 0; j < operators.size(); j++) {
         if(operators.at(j) == "||") {
           operatorIndex = j;
         } 
       }
-      for (int j = 0; j < operators.size(); j++) {
+      for (unsigned int j = 0; j < operators.size(); j++) {
         if(operators.at(j) == "&&") {
           operatorIndex = j;
         }
       }
-      for (int j = 0; j < commands.size(); j++) {
+      for (unsigned int j = 0; j < commands.size(); j++) {
         if (commands.at(j) == operators.at(operatorIndex)) {
           i = j;
         }
@@ -156,14 +157,14 @@ bool executeCommand(vector<string> commands) {
       vector<string> rhs;
       
       stack<string> lhsStack;
-      for(int j = i - 1;  j >= 0 ; j--) {
+      for(unsigned int j = i - 1;  j >= 0 ; j--) {
         lhsStack.push(commands.at(j));
       }
       while(!lhsStack.empty()) {
         lhs.push_back(lhsStack.top());
         lhsStack.pop();
       }
-      for(int j = i + 1; j < commands.size(); j++) {
+      for(unsigned int j = i + 1; j < commands.size(); j++) {
         rhs.push_back(commands.at(j));
       }
       if(executeCommand(lhs) && executeCommand(rhs)) {
@@ -174,7 +175,7 @@ bool executeCommand(vector<string> commands) {
     else if(commands.at(i) == "||") {
       vector<string> lhs;
       stack<string> lhsStack;
-      for(int j = i - 1; j >= 0; j--) {
+      for(unsigned int j = i - 1; j >= 0; j--) {
         lhsStack.push(commands.at(j));
       }
       while(!lhsStack.empty()) {
@@ -186,7 +187,7 @@ bool executeCommand(vector<string> commands) {
       }
       else {
         vector<string> rhs;
-        for(int j = i + 1; j < commands.size(); j++) {
+        for(unsigned int j = i + 1; j < commands.size(); j++) {
           cout << commands.at(j) << endl;
           rhs.push_back(commands.at(j));
         }
@@ -243,7 +244,7 @@ bool executeCommand(vector<string> commands) {
       vector<string> lhs;
       string rhs = commands.at(i + 1);
 
-      for (int j = 0; j != i; j++) {
+      for (unsigned int j = 0; j != i; j++) {
         lhs.push_back(commands.at(j));
       }
 
@@ -272,7 +273,7 @@ bool executeCommand(vector<string> commands) {
       vector<string> lhs;
       string rhs = commands.at(i + 1);
 
-      for (int j = 0; j != i; j++) {
+      for (unsigned int j = 0; j != i; j++) {
         lhs.push_back(commands.at(j));
       }
 
