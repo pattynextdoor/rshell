@@ -157,7 +157,7 @@ bool executeCommand(vector<string> commands) {
       vector<string> rhs;
       
       stack<string> lhsStack;
-      for(unsigned int j = i - 1;  j >= 0 ; j--) {
+      for(int j = i - 1;  j >= 0 ; j--) {
         lhsStack.push(commands.at(j));
       }
       while(!lhsStack.empty()) {
@@ -175,7 +175,7 @@ bool executeCommand(vector<string> commands) {
     else if(commands.at(i) == "||") {
       vector<string> lhs;
       stack<string> lhsStack;
-      for(unsigned int j = i - 1; j >= 0; j--) {
+      for(int j = i - 1; j >= 0; j--) {
         lhsStack.push(commands.at(j));
       }
       while(!lhsStack.empty()) {
