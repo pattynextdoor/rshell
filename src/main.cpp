@@ -313,6 +313,33 @@ bool executeCommand(vector<string> commands) {
       }
       return false;
     }
+    else if (commands.at(i) == "|") {
+      vector<string> lhs;
+      vector<string> rhs;
+      vector<string> deleteDummy;
+
+      deleteDummy.push_back("rm");
+      deleteDummy.push_back("dummyFile.txt");
+
+      for (int j = 0; j < i; j++) {
+        lhs.push_back(commands.at(j));
+      }
+
+      lhs.push_back(">");
+      lhs.push_back("dummyFile.txt");
+      executeCommand(lhs);
+      
+      for (int j = i + 1; j < commands.size();  j++) {
+        rhs.push_back(commands.at(j));
+      }
+
+      rhs.push_back("dummyFile.txt");
+      executeCommand(rhs);
+      executeCommand(deleteDummy);
+
+      return true;
+
+    }
   }
   // Populate character array with vector contents 
   char* args[500];
