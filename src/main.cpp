@@ -312,40 +312,7 @@ bool executeCommand(vector<string> commands) {
         return true;
       }
       return false;
-
-      
-      
-      
-      
-      vector<string> lhs;
-      string rhs = commands.at(i + 1);
-
-      for (unsigned int j = 0; j != i; j++) {
-        lhs.push_back(commands.at(j));
-      }
-
-      int saved_stdout;
-      saved_stdout = dup(1);
-      int fd = open((char*)rhs.c_str(), O_CREAT | O_WRONLY | O_APPEND, S_IRWXU);
-      if (fd < 0) {
-        perror("fd");
-        return false;
-      }
-      if (dup2(fd, 1) < 0) {
-        perror("dup2");
-        return false;
-      }
-      executeCommand(lhs);
-
-      if( dup2(saved_stdout, 1) < 0) {
-        perror("dup2");
-        return false;
-      }
-
-      close(saved_stdout);
-      return true;
     }
-
   }
   // Populate character array with vector contents 
   char* args[500];
