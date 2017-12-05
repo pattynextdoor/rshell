@@ -317,10 +317,21 @@ bool executeCommand(vector<string> commands) {
       vector<string> lhs;
       vector<string> rhs;
       vector<string> deleteDummy;
+      stack<string> lhsStack;
+      vector<string> entireLeft;
 
+      for(unsigned int j = i; j != 0; j--) {
+        lhsStack.push(commands.at(j));
+      }
+      
+      while(!lhsStack.empty()) {
+        entireLeft.push_back(lhsStack.top());
+        pipeStack.pop();
+      }
+      
       deleteDummy.push_back("rm");
       deleteDummy.push_back("dummyFile.txt");
-
+      
       for (int j = 0; j < i; j++) {
         lhs.push_back(commands.at(j));
       }
