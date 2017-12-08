@@ -317,51 +317,10 @@ bool executeCommand(vector<string> commands) {
       vector<string> lhs;
       vector<string> rhs;
       vector<string> deleteDummy;
-      stack<string> lhsStack;
-      vector<string> entireLeft;
-      
-      int p[2];
-      pid_t pid = fork();
-      int fd = 0;
 
-      for(unsigned j = 0; j < commands.size(); j++) {
-        pipe(p);
-
-        if((pid = fork()) == -1) {
-          perror("exec");
-          return false;
-        }
-        else if (pid == 0) {
-          dup2(fd, 0);
-          if((commands.size() + 1) != NULL) {
-            dup2(p[1], 1);
-          }
-          close(p[0]);
-          execvp((commands
-          perror("exec");
-          return false;
-        }
-        else {
-          if (wait(0) == -1) {
-            perror("wait");
-            close(p[1]);
-            fd = p[0];
-          }
-        }
-        return true;
-
-      /*for(unsigned int j = i; j != 0; j--) {
-        lhsStack.push(commands.at(j));
-      }
-      
-      while(!lhsStack.empty()) {
-        entireLeft.push_back(lhsStack.top());
-        pipeStack.pop();
-      }
-      
       deleteDummy.push_back("rm");
       deleteDummy.push_back("dummyFile.txt");
-      
+
       for (int j = 0; j < i; j++) {
         lhs.push_back(commands.at(j));
       }
@@ -372,14 +331,14 @@ bool executeCommand(vector<string> commands) {
       
       for (int j = i + 1; j < commands.size();  j++) {
         rhs.push_back(commands.at(j));
-      }*/
+      }
 
       rhs.push_back("dummyFile.txt");
       executeCommand(rhs);
       executeCommand(deleteDummy);
 
       return true;
-
+  
     }
   }
   // Populate character array with vector contents 
