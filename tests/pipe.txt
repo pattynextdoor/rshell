@@ -1,0 +1,5 @@
+ls | grep make
+pwd && git status | grep git
+date | grep : || ls | grep make
+ls | grep make | grep file
+exit

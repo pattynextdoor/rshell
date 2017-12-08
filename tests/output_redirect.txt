@@ -1,0 +1,7 @@
+ls -a > output.txt
+cat output.txt
+pwd >> output.txt && git status >> output.txt
+cat output.txt
+test -e makefile >> output.txt
+cat output.txt
+exit
