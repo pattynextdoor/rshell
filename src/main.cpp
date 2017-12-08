@@ -321,7 +321,7 @@ bool executeCommand(vector<string> commands) {
       deleteDummy.push_back("rm");
       deleteDummy.push_back("dummyFile.txt");
 
-      for (int j = 0; j < i; j++) {
+      for (unsigned int j = 0; j < i; j++) {
         lhs.push_back(commands.at(j));
       }
 
@@ -329,7 +329,7 @@ bool executeCommand(vector<string> commands) {
       lhs.push_back("dummyFile.txt");
       executeCommand(lhs);
       
-      for (int j = i + 1; j < commands.size();  j++) {
+      for (unsigned int j = i + 1; j < commands.size();  j++) {
         rhs.push_back(commands.at(j));
       }
 
