@@ -1,0 +1,7 @@
+ls > input.txt
+cat < input.txt
+git status > input.txt && pwd
+echo < input.txt
+ls > input.txt || test -e makefile
+echo < input.txt && make
+exit
