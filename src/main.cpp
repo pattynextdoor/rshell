@@ -242,13 +242,16 @@ bool executeCommand(vector<string> commands) {
       }
     }
     else if(commands.at(i) == ">") {
+      // Populate lhs for execution
       vector<string> lhs;
+      // File follows the > symbol
       string rhs = commands.at(i + 1);
 
       for (unsigned int j = 0; j != i; j++) {
         lhs.push_back(commands.at(j));
       }
 
+      // Save file descriptors
       int saved_stdout;
       saved_stdout = dup(1);
       int fd = open((char*)rhs.c_str(), O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
@@ -266,11 +269,12 @@ bool executeCommand(vector<string> commands) {
         perror("dup2");
         return false;
       }
-
+      // Cease redirection to file and bring it back to stdout
       close(saved_stdout);
       return true;      
     }
     else if(commands.at(i) == ">>") {
+      // Populate lhs for execution
       vector<string> lhs;
       string rhs = commands.at(i + 1);
 
@@ -278,8 +282,10 @@ bool executeCommand(vector<string> commands) {
         lhs.push_back(commands.at(j));
       }
 
+      // Save file descriptors
       int saved_stdout;
       saved_stdout = dup(1);
+      // We use O_APPEND instead of O_TRUNCATE
       int fd = open((char*)rhs.c_str(), O_CREAT | O_WRONLY | O_APPEND, S_IRWXU);
       if (fd < 0) {
         perror("fd");
@@ -295,7 +301,7 @@ bool executeCommand(vector<string> commands) {
         perror("dup2");
         return false;
       }
-
+      // Cease redirection to file and bring it back to stdout
       close(saved_stdout);
       return true;
     }
