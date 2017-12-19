@@ -14,11 +14,11 @@ Rshell is a command line interface written in C++. It will execute bash-like com
 
 Clone the repository to your computer.
 
-`git clone https://github.com/cs100/rshell-sudo-rm-rf.git`
+`git clone https://github.com/ptumb001/rshell.git`
 
 Navigate to the cloned directory.
 
-`cd rshell-sudo-rm-rf`
+`cd rshell`
 
 Compile and run.
 
