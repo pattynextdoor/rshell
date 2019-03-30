@@ -413,6 +413,7 @@ bool isFile(string& fileName) {
   
   return false;
 }
+
 //---------------------------------------------------
 
 bool isExit(vector<string> commands) {
@@ -420,6 +421,22 @@ bool isExit(vector<string> commands) {
     return true;
   }
   return false;
+}
+
+void removeComments(vector<string> &commands) {
+  int commentIndex = commands.size();
+
+  for (unsigned i = 0; i < commands.size(); i++) {
+    if (commands.at(i) == "#" || commands.at(i).front() == '#') {
+      commentIndex = i;
+      break;
+    }
+  }
+
+  vector<string>::const_iterator first = commands.begin();
+  vector<string>::const_iterator last = commands.begin() + commentIndex;
+
+  commands.assign(first, last);
 }
 
 int main() {
@@ -432,21 +449,7 @@ int main() {
       // Call execute to exit terminal
       userExit->execute(); 
     }
-    // Parse through commands to find comment character #
-    for (unsigned int i = 0; i < currCommand->commands.size(); i++) { 
-      if (currCommand->commands.at(i) == "#" || currCommand->commands.at(i).front() == '#') { 
-        unsigned commentIndex = i; 
-        if (currCommand->commands.at(commentIndex).front() == '#') {
-          currCommand->commands.at(commentIndex) = currCommand->commands.at(commentIndex).substr(1);
-        }
-        for (unsigned j = currCommand->commands.size() - 1; j >= commentIndex; j--) {
-          // Starting at commentIndex, set # and elements after to null
-          currCommand->commands.pop_back();
-        }
-        break; 
-      }
-    }
-    // Function for syscalls
+    removeComments(currCommand->commands); 
     executeCommand(currCommand->commands);   
   }
   return 0;
