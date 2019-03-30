@@ -5,13 +5,21 @@
 
 CMD::CMD() {}
 
+<<<<<<< HEAD
 bool CMD::fileExists(string& fileName) {
+=======
+bool fileExists(string& fileName) {
+>>>>>>> 09b7b5b571d27509a20b96679c908d5902214f3c
   struct stat buf;
 
   return (stat(fileName.c_str(), &buf) == 0);
 }
 
+<<<<<<< HEAD
 bool CMD::isDirectory(string& fileName) {
+=======
+bool isDirectory(string& fileName) {
+>>>>>>> 09b7b5b571d27509a20b96679c908d5902214f3c
   struct stat path;
   
   if (stat(fileName.c_str(), &path) == 0) {
@@ -25,7 +33,11 @@ bool CMD::isDirectory(string& fileName) {
   return false;
 }
 
+<<<<<<< HEAD
 bool CMD::isFile(string& fileName) {
+=======
+bool isFile(string& fileName) {
+>>>>>>> 09b7b5b571d27509a20b96679c908d5902214f3c
   struct stat filePath;
 
   if (stat(fileName.c_str(), &filePath) == 0) {
@@ -40,7 +52,11 @@ bool CMD::isFile(string& fileName) {
   return false;
 }
 
+<<<<<<< HEAD
 bool CMD::isLogicalOperator(std::vector<string> commands, unsigned index) {
+=======
+bool isLogicalOperator(std::vector<string> commands, unsigned index) {
+>>>>>>> 09b7b5b571d27509a20b96679c908d5902214f3c
   if (index < 0 || index >= commands.size()) {
     return false;
   }
@@ -50,7 +66,11 @@ bool CMD::isLogicalOperator(std::vector<string> commands, unsigned index) {
   return false;
 }
 
+<<<<<<< HEAD
 std::vector<string> CMD::findOperators(std::vector<string> commands) {
+=======
+std::vector<string> findOperators(std::vector<string> commands) {
+>>>>>>> 09b7b5b571d27509a20b96679c908d5902214f3c
   std::vector<string> operators;
 
   for (unsigned i = 0; i < commands.size(); i++) {
