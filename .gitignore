@@ -4,3 +4,4 @@
 **/src/*.swp
 **/tests/output.txt
 **/.DS_Store
+**/.vscode
