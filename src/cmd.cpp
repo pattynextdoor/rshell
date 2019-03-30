@@ -5,13 +5,13 @@
 
 CMD::CMD() {}
 
-bool fileExists(string& fileName) {
+bool CMD::fileExists(string& fileName) {
   struct stat buf;
 
   return (stat(fileName.c_str(), &buf) == 0);
 }
 
-bool isDirectory(string& fileName) {
+bool CMD::isDirectory(string& fileName) {
   struct stat path;
   
   if (stat(fileName.c_str(), &path) == 0) {
@@ -25,7 +25,7 @@ bool isDirectory(string& fileName) {
   return false;
 }
 
-bool isFile(string& fileName) {
+bool CMD::isFile(string& fileName) {
   struct stat filePath;
 
   if (stat(fileName.c_str(), &filePath) == 0) {
@@ -40,7 +40,7 @@ bool isFile(string& fileName) {
   return false;
 }
 
-bool isLogicalOperator(std::vector<string> commands, unsigned index) {
+bool CMD::isLogicalOperator(std::vector<string> commands, unsigned index) {
   if (index < 0 || index >= commands.size()) {
     return false;
   }
@@ -50,7 +50,7 @@ bool isLogicalOperator(std::vector<string> commands, unsigned index) {
   return false;
 }
 
-std::vector<string> findOperators(std::vector<string> commands) {
+std::vector<string> CMD::findOperators(std::vector<string> commands) {
   std::vector<string> operators;
 
   for (unsigned i = 0; i < commands.size(); i++) {
