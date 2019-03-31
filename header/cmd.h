@@ -2,6 +2,10 @@
 #define __CMD_H__
 
 #include "base.h"
+#include "../header/cmd.h"
+#include "../header/semicolon.h"
+#include "../header/and.h"
+#include "../header/or.h"
 
 #include <iostream>
 #include <string>
@@ -9,6 +13,7 @@
 #include <stack>
 #include <queue>
 #include <vector>
+#include <map>
 #include <string.h>
 #include <unistd.h>
 #include <fstream>
@@ -25,13 +30,13 @@
 class CMD : public Base {
   private:
     bool isLogicalOperator(std::vector<string>, unsigned); 
-    std::vector<string> findOperators(std::vector<string>);
+    std::vector<string> findOperators(const std::vector<string>);
     bool fileExists(string&);
     bool isDirectory(string&);
     bool isFile(string&);
+    std::pair<int, int> checkParentheses(const std::vector<string>);
   public:
     std::vector<string> commands;
-    CMD();
     bool execute();
 };
 #endif

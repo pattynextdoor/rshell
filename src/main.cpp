@@ -1,11 +1,11 @@
 #include <iostream>
-#include <string>
 #include <cstring>
 #include <stack>
 #include <queue>
 #include <vector>
 #include <string.h>
 #include <unistd.h>
+#include <limits.h>
 #include <fstream>
 #include <stdio.h>
 #include <sys/wait.h>
@@ -20,29 +20,39 @@
 #include "../header/exit.h"
 
 // Prompt user and return input string
-string prompt() {
-  string input;
+std::string prompt() {
 
-  cout << "$ ";
+  char hostname[HOST_NAME_MAX];
+  char username[LOGIN_NAME_MAX];
+  gethostname(hostname, HOST_NAME_MAX);
+  getlogin_r(username, LOGIN_NAME_MAX);
+
+  std::string host = std::string(hostname);
+  std::string user = std::string(username);
+
+  std::string input;
+  
+  cout << user + "@" + host + " $ ";
   std::getline(cin, input);
+
   return input;
 }
 
 // Using Boost's split() to parse string 
-void parse(std::vector<string> &commands) {
-  string input = prompt();
+void parse(std::vector<std::string> &commands) {
+  std::string input = prompt();
   boost::split(commands, input, boost::is_any_of(" "));
 }
 
 
-bool isExit(std::vector<string> commands) {
+bool isExit(std::vector<std::string> commands) {
   if (commands.at(0) == "exit") {
     return true;
   }
   return false;
 }
 
-void removeComments(std::vector<string> &commands) {
+void removeComments(std::vector<std::string> &commands) {
   int commentIndex = commands.size();
 
   for (unsigned i = 0; i < commands.size(); i++) {
@@ -52,8 +62,8 @@ void removeComments(std::vector<string> &commands) {
     }
   }
 
-  std::vector<string>::const_iterator first = commands.begin();
-  std::vector<string>::const_iterator last = commands.begin() + commentIndex;
+  std::vector<std::string>::const_iterator first = commands.begin();
+  std::vector<std::string>::const_iterator last = commands.begin() + commentIndex;
 
   commands.assign(first, last);
 }

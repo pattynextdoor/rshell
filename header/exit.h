@@ -7,7 +7,6 @@
 
 class Exit : public CMD {
   public:
-    Exit();
     bool execute();
 
 };

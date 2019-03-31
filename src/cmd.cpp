@@ -1,25 +1,12 @@
 #include "../header/cmd.h"
-#include "../header/semicolon.h"
-#include "../header/and.h"
-#include "../header/or.h"
 
-CMD::CMD() {}
-
-<<<<<<< HEAD
-bool CMD::fileExists(string& fileName) {
-=======
-bool fileExists(string& fileName) {
->>>>>>> 09b7b5b571d27509a20b96679c908d5902214f3c
+bool CMD::fileExists(std::string& fileName) {
   struct stat buf;
 
   return (stat(fileName.c_str(), &buf) == 0);
 }
 
-<<<<<<< HEAD
-bool CMD::isDirectory(string& fileName) {
-=======
-bool isDirectory(string& fileName) {
->>>>>>> 09b7b5b571d27509a20b96679c908d5902214f3c
+bool CMD::isDirectory(std::string& fileName) {
   struct stat path;
   
   if (stat(fileName.c_str(), &path) == 0) {
@@ -33,11 +20,7 @@ bool isDirectory(string& fileName) {
   return false;
 }
 
-<<<<<<< HEAD
-bool CMD::isFile(string& fileName) {
-=======
-bool isFile(string& fileName) {
->>>>>>> 09b7b5b571d27509a20b96679c908d5902214f3c
+bool CMD::isFile(std::string& fileName) {
   struct stat filePath;
 
   if (stat(fileName.c_str(), &filePath) == 0) {
@@ -52,11 +35,7 @@ bool isFile(string& fileName) {
   return false;
 }
 
-<<<<<<< HEAD
-bool CMD::isLogicalOperator(std::vector<string> commands, unsigned index) {
-=======
-bool isLogicalOperator(std::vector<string> commands, unsigned index) {
->>>>>>> 09b7b5b571d27509a20b96679c908d5902214f3c
+bool CMD::isLogicalOperator(std::vector<std::string> commands, unsigned index) {
   if (index < 0 || index >= commands.size()) {
     return false;
   }
@@ -66,12 +45,8 @@ bool isLogicalOperator(std::vector<string> commands, unsigned index) {
   return false;
 }
 
-<<<<<<< HEAD
-std::vector<string> CMD::findOperators(std::vector<string> commands) {
-=======
-std::vector<string> findOperators(std::vector<string> commands) {
->>>>>>> 09b7b5b571d27509a20b96679c908d5902214f3c
-  std::vector<string> operators;
+std::vector<std::string> CMD::findOperators(const std::vector<std::string> commands) {
+  std::vector<std::string> operators;
 
   for (unsigned i = 0; i < commands.size(); i++) {
     if (isLogicalOperator(commands, i)) {
@@ -81,15 +56,12 @@ std::vector<string> findOperators(std::vector<string> commands) {
   return operators;
 }
 
-bool CMD::execute() {
-  std::vector<string> operators = findOperators(this->commands);
+std::pair<int, int> CMD::checkParentheses(const vector<std::string> commands) {
+  std::pair<int, int> counts;
   
-
-  stack<string> depthStack;
   int beginCount = 0;
   int closeCount = 0;
-
-  //check number of parenthesis before command execution
+  
   for(unsigned int i = 0; i < commands.size(); i++) {
     if(commands.at(i).front() == '(') {
       ++beginCount;
@@ -98,7 +70,25 @@ bool CMD::execute() {
       ++closeCount;
     }
   }
+
+  counts.first = beginCount;
+  counts.second = closeCount;
+
+  return counts;
+}
+
+bool CMD::execute() {
+  std::vector<std::string> operators = findOperators(commands);
   
+
+  stack<std::string> depthStack;
+  
+  //check number of parenthesis before command execution
+  std::pair<int, int> counts = checkParentheses(commands); 
+  
+  int beginCount = counts.first;
+  int closeCount = counts.second;
+
   if(beginCount != closeCount) {
     cout << "Error: Parentheses don't match." << endl;
     return false;
@@ -151,10 +141,10 @@ bool CMD::execute() {
       CMD* left = new CMD();
       CMD* right = new CMD();
 
-      std::vector<string> lhs;
-      std::vector<string> rhs;
+      std::vector<std::string> lhs;
+      std::vector<std::string> rhs;
       
-      stack<string> lhsStack;
+      stack<std::string> lhsStack;
       for(int j = i - 1;  j >= 0 ; j--) {
         lhsStack.push(commands.at(j));
       }
@@ -177,8 +167,8 @@ bool CMD::execute() {
       CMD* left = new CMD();
       CMD* right = new CMD();
 
-      std::vector<string> lhs;
-      stack<string> lhsStack;
+      std::vector<std::string> lhs;
+      stack<std::string> lhsStack;
       for(int j = i - 1; j >= 0; j--) {
         lhsStack.push(commands.at(j));
       }
@@ -187,7 +177,7 @@ bool CMD::execute() {
         lhsStack.pop();
       }
 
-      std::vector<string> rhs;
+      std::vector<std::string> rhs;
       for(unsigned int j = i + 1; j < commands.size(); j++) {
         cout << commands.at(j) << endl;
         rhs.push_back(commands.at(j));
@@ -246,9 +236,9 @@ bool CMD::execute() {
     else if(commands.at(i) == ">") {
       // Populate lhs for execution
       CMD* left = new CMD();
-      std::vector<string> lhs;
+      std::vector<std::string> lhs;
       // File follows the > symbol
-      string rhs = commands.at(i + 1);
+      std::string rhs = commands.at(i + 1);
 
       for (unsigned int j = 0; j != i; j++) {
         lhs.push_back(commands.at(j));
@@ -282,9 +272,9 @@ bool CMD::execute() {
     else if(commands.at(i) == ">>") {
       // Populate lhs for execution
       CMD* left = new CMD();
-      std::vector<string> lhs;
+      std::vector<std::string> lhs;
 
-      string rhs = commands.at(i + 1);
+      std::string rhs = commands.at(i + 1);
 
       for (unsigned int j = 0; j != i; j++) {
         lhs.push_back(commands.at(j));
@@ -318,11 +308,11 @@ bool CMD::execute() {
     }
     else if(commands.at(i) == "<") {
       ifstream myFile(commands.at(i + 1).c_str());
-      string entry;
+      std::string entry;
       if (myFile.is_open()) {
         while (getline(myFile, entry)) {
           CMD* cpyCMD = new CMD();
-          std::vector<string> cpy;
+          std::vector<std::string> cpy;
           cpy.push_back(commands.at(0));
           cpy.push_back(entry);
           cpyCMD->commands = cpy;
@@ -337,9 +327,9 @@ bool CMD::execute() {
       CMD* right = new CMD();
       CMD* deleteCMD = new CMD();
       
-      std::vector<string> lhs;
-      std::vector<string> rhs;
-      std::vector<string> deleteDummy;
+      std::vector<std::string> lhs;
+      std::vector<std::string> rhs;
+      std::vector<std::string> deleteDummy;
 
       deleteDummy.push_back("rm");
       deleteDummy.push_back("dummyFile.txt");
