@@ -31,8 +31,12 @@ std::string prompt() {
   std::string user = std::string(username);
 
   std::string input;
+
+  char buf[500];
+  getcwd(buf, 500);
+  std::string cwd = buf;
   
-  cout << user + "@" + host + " $ ";
+  cout << user + "@" + host + " " + cwd + " $ ";
   std::getline(cin, input);
 
   return input;
